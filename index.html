@@ -168,6 +168,16 @@ function openModal(i){
  document.getElementById("modal").classList.add("open");
 }
 function closeModal(){document.getElementById("modal").classList.remove("open")}
+ // APPGAMING CLOUD
+const cloud = document.createElement("div");
+cloud.innerHTML = `
+  <h2>☁️ APPGAMING CLOUD</h2>
+  <p>Serveur : Non connecté</p>
+  <p>Préparation du cloud gaming...</p>
+`;
+cloud.style.cssText =
+  "background:#17243d;color:white;padding:20px;margin:20px;border-radius:15px;text-align:center";
+document.body.appendChild(cloud);
 render();
 </script>
 </body>
