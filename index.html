@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>APPGAMING</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#080d1b;color:white;font-family:Arial,sans-serif}
+header{padding:20px 6%;background:#111a2d;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px}
+.logo{font-size:27px;font-weight:900;color:#55c7ff}
+.logo span{color:#a78bfa}
+nav a{color:white;text-decoration:none;margin:8px}
+.hero{text-align:center;padding:65px 15px;background:radial-gradient(ellipse at top,#29477e,#080d1b 75%)}
+.hero h1{font-size:clamp(35px,7vw,65px);margin:10px}
+.hero h1 span{color:#55c7ff}
+.hero p{color:#c3cee0}
+main{padding:25px 6%}
+.search{width:100%;padding:15px;border-radius:10px;border:1px solid #344866;background:#141e33;color:white;font-size:16px;margin:15px 0}
+.filters{display:flex;gap:9px;flex-wrap:wrap;margin:12px 0 25px}
+.filters button{background:#1b2942;color:white;border:1px solid #344866}
+.filters button.active,.filters button:hover{background:#287bfa}
+.games{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px}
+.game{background:#141e33;border:1px solid #293b5d;border-radius:14px;padding:17px;transition:.2s}
+.game:hover{transform:translateY(-4px);border-color:#55c7ff}
+.cover{height:100px;border-radius:10px;background:linear-gradient(135deg,#263e70,#7046a4);display:grid;place-items:center;font-size:40px}
+.game h3{margin:13px 0 6px}
+.game p{font-size:13px;color:#aebbd1}
+.tag{color:#8fcaff;font-size:12px}
+.game button{width:100%;padding:11px;border:0;border-radius:8px;background:#287bfa;color:white;font-weight:bold;cursor:pointer;margin-top:8px}
+#message{display:none;padding:16px;background:#182844;border:1px solid #55c7ff;border-radius:10px;margin:20px 0}
+footer{text-align:center;color:#9aa9c1;padding:30px;border-top:1px solid #293b5d}
+</style>
+</head>
+<body>
+<header>
+ <div class="logo">APP<span>GAMING</span></div>
+ <nav><a href="#catalogue">Jeux</a><a href="#catalogue">Catalogue</a></nav>
+</header>
+
+<div class="hero">
+ <h1>Bienvenue sur <span>APPGAMING</span></h1>
+ <p>Ton futur univers de cloud gaming.</p>
+ <a href="#catalogue"><button>Explorer les jeux</button></a>
+</div>
+
+<main id="catalogue">
+ <h2>🎮 Catalogue des jeux</h2>
+ <input class="search" id="search" placeholder="Rechercher un jeu..." oninput="render()">
+
+ <div class="filters" id="filters"></div>
+ <div class="games" id="games"></div>
+ <div id="message"></div>
+</main>
+
+<footer>
+ APPGAMING © 2026<br>
+ Projet indépendant de cloud gaming.<br>
+ <small>Catalogue de présentation : les jeux ne sont pas encore jouables en streaming.</small>
+</footer>
+
+<script>
+const jeux=[
+["PES 6","Football","⚽"],["PES 2010","Football","⚽"],
+["PES 2011","Football","⚽"],["PES 2012","Football","⚽"],
+["PES 2013","Football","⚽"],["PES 2014","Football","⚽"],
+["PES 2015","Football","⚽"],["PES 2016","Football","⚽"],
+["PES 2017","Football","⚽"],["PES 2018","Football","⚽"],
+["PES 2019","Football","⚽"],["PES 2020","Football","⚽"],
+["PES 2021","Football","⚽"],["eFootball 2026","Football","⚽"],
+["SP Football Life","Football","⚽"],["EA SPORTS FC 26","Football","⚽"],
+["Football Manager","Football","📋"],["Rocket League","Football","🚀"],
+["NBA 2K","Sport","🏀"],["Forza Horizon 5","Course","🏎️"],
+["Trackmania","Course","🏁"],["Asphalt Legends","Course","🚗"],
+["Need for Speed Heat","Course","🚘"],["Minecraft","Aventure","⛏️"],
+["Genshin Impact","Aventure","🌍"],["Roblox","Aventure","🎮"],
+["LEGO Fortnite","Aventure","🧱"],["Brawlhalla","Combat","🥊"],
+["Fall Guys","Combat","🏃"],["Super Smash Bros.","Combat","👊"],
+["Among Us","Simulation","🚀"],["The Sims 4","Simulation","🏠"],
+["Stardew Valley","Simulation","🌱"],["Terraria","Aventure","🗡️"],
+["Geometry Dash","Autres","🔷"],["Human: Fall Flat","Autres","🤸"],
+["Overcooked","Autres","🍳"]
+];
+
+const categories=["Tous","Football","Sport","Course","Aventure","Combat","Simulation","Autres"];
+let active="Tous";
+
+function makeFilters(){
+ document.getElementById("filters").innerHTML=categories.map(c=>
+ `<button class="${c===active?"active":""}" onclick="choose('${c}')">${c}</button>`
+ ).join("");
+}
+function choose(c){active=c;render()}
+function render(){
+ makeFilters();
+ const q=document.getElementById("search").value.toLowerCase();
+ const result=jeux.filter(j=>(active==="Tous"||j[1]===active)&&j[0].toLowerCase().includes(q));
+ document.getElementById("games").innerHTML=result.map(j=>`
+ <article class="game">
+ <div class="cover">${j[2]}</div>
+ <h3>${j[0]}</h3>
+ <div class="tag">${j[1]}</div>
+ <p>Jeu prévu au catalogue APPGAMING</p>
+ <button onclick="info('${j[0].replace(/'/g,"\\'")}')">Découvrir</button>
+ </article>`).join("");
+ if(!result.length)document.getElementById("games").innerHTML="<p>Aucun jeu trouvé.</p>";
+}
+function info(n){
+ const box=document.getElementById("message");
+ box.style.display="block";
+ box.textContent=n+" : ce jeu est référencé dans le catalogue. Sa disponibilité en streaming reste à mettre en place.";
+ box.scrollIntoView({behavior:"smooth",block:"center"});
+}
+render();
+</script>
+</body>
+</html>
